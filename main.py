@@ -13,6 +13,7 @@ BACKGROUND_COLOR = (0, 0, 0)
 PARTICLE_COLOR = (255, 255, 255)
 PARTICLE_SIZE = 4
 PARTICLE_QUANTITY = 100
+PARTICLE_SPEED = 2
 
 
 class Particle(pygame.sprite.Sprite):
@@ -23,6 +24,13 @@ class Particle(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = random.randint(0, WINDOW_WIDTH)
         self.rect.y = random.randint(0, WINDOW_HEIGHT)
+
+
+    def update(self):
+        self.rect.y += PARTICLE_SPEED
+        if self.rect.y > WINDOW_HEIGHT:
+            self.rect.y = 0
+            self.rect.x = random.randint(0, WINDOW_WIDTH)
 
 
 class Particle_system():
@@ -49,6 +57,7 @@ class Particle_system():
                     pygame.quit()
                     sys.exit()
 
+            self.particles.update()
             self.render()
             pygame.time.Clock().tick(60)
 
