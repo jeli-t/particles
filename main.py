@@ -26,11 +26,17 @@ class Particle(pygame.sprite.Sprite):
         self.rect.y = random.randint(0, WINDOW_HEIGHT)
 
 
-    def update(self):
-        self.rect.y += PARTICLE_SPEED
-        if self.rect.y > WINDOW_HEIGHT:
-            self.rect.y = 0
-            self.rect.x = random.randint(0, WINDOW_WIDTH)
+    def update(self, direction):
+        self.rect.x += direction.x * PARTICLE_SPEED
+        self.rect.y += direction.y * PARTICLE_SPEED
+        if self.rect.left > WINDOW_WIDTH:
+            self.rect.right = 0
+        elif self.rect.right < 0:
+            self.rect.left = WINDOW_WIDTH
+        if self.rect.top > WINDOW_HEIGHT:
+            self.rect.bottom = 0
+        elif self.rect.bottom < 0:
+            self.rect.top = WINDOW_HEIGHT
 
 
 class Particle_system():
@@ -41,6 +47,7 @@ class Particle_system():
         for _ in range(PARTICLE_QUANTITY):
             particle = Particle()
             self.particles.add(particle)
+        self.direction = pygame.Vector2(0, 1).rotate(random.uniform(0, 360))  # Initial random direction
         self.main_loop()
 
 
@@ -57,7 +64,7 @@ class Particle_system():
                     pygame.quit()
                     sys.exit()
 
-            self.particles.update()
+            self.particles.update(self.direction)
             self.render()
             pygame.time.Clock().tick(60)
 
