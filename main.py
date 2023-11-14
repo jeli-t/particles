@@ -7,11 +7,11 @@ from pygame.math import Vector2
 pygame.init()
 
 # Config
-WINDOW_WIDTH = 640
-WINDOW_HEIGHT = 480
+WINDOW_WIDTH = 1280
+WINDOW_HEIGHT = 960
 BACKGROUND_COLOR = (0, 0, 0)
 PARTICLE_COLOR = (255, 255, 255)
-PARTICLE_SIZE = (4, 8)
+PARTICLE_SIZE = (12, 18)
 PARTICLE_QUANTITY = 100
 PARTICLE_SPEED = (2, 4)
 
@@ -19,9 +19,14 @@ PARTICLE_SPEED = (2, 4)
 class Particle(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
+        # Load snowflake images
+        snowflake_images = [
+            pygame.image.load("snowflake1.png").convert_alpha(),
+            pygame.image.load("snowflake2.png").convert_alpha()
+        ]
         size = (random.randint(*PARTICLE_SIZE))
-        self.image = pygame.Surface((size, size))
-        self.image.fill(PARTICLE_COLOR)
+        self.image = random.choice(snowflake_images)
+        self.image = pygame.transform.scale(self.image, (size, size))
         self.rect = self.image.get_rect()
         self.rect.x = random.randint(0, WINDOW_WIDTH)
         self.rect.y = random.randint(0, WINDOW_HEIGHT)
