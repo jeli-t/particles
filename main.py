@@ -77,6 +77,9 @@ class Particle_system():
                     x, y = pygame.mouse.get_pos()
                     self.vector_end = pygame.Vector2(x, y)
                 if event.type == pygame.MOUSEBUTTONUP:
+                    direction_x = (self.vector_end[0] - self.vector_start[0]) / 40
+                    direction_y = (self.vector_end[1] - self.vector_start[1]) / 40
+                    self.direction = pygame.Vector2(direction_x, direction_y)
                     self.drawing_vector = False
 
             self.particles.update(self.direction)
