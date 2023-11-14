@@ -11,24 +11,26 @@ WINDOW_WIDTH = 640
 WINDOW_HEIGHT = 480
 BACKGROUND_COLOR = (0, 0, 0)
 PARTICLE_COLOR = (255, 255, 255)
-PARTICLE_SIZE = 4
+PARTICLE_SIZE = (4, 8)
 PARTICLE_QUANTITY = 100
-PARTICLE_SPEED = 2
+PARTICLE_SPEED = (2, 4)
 
 
 class Particle(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.Surface((PARTICLE_SIZE, PARTICLE_SIZE))
+        size = (random.randint(*PARTICLE_SIZE))
+        self.image = pygame.Surface((size, size))
         self.image.fill(PARTICLE_COLOR)
         self.rect = self.image.get_rect()
         self.rect.x = random.randint(0, WINDOW_WIDTH)
         self.rect.y = random.randint(0, WINDOW_HEIGHT)
+        self.speed = (random.randint(*PARTICLE_SPEED))
 
 
     def update(self, direction):
-        self.rect.x += direction.x * PARTICLE_SPEED
-        self.rect.y += direction.y * PARTICLE_SPEED
+        self.rect.x += direction.x * self.speed
+        self.rect.y += direction.y * self.speed
         if self.rect.left > WINDOW_WIDTH:
             self.rect.right = 0
         elif self.rect.right < 0:
