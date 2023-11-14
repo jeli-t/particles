@@ -48,12 +48,17 @@ class Particle_system():
             particle = Particle()
             self.particles.add(particle)
         self.direction = pygame.Vector2(0, 1).rotate(random.uniform(0, 360))  # Initial random direction
+        self.drawing_vector = False
+        self.vector_start = Vector2(0, 0)
+        self.vector_end = Vector2(0, 0)
         self.main_loop()
 
 
     def render(self):
         self.screen.fill(BACKGROUND_COLOR)
         self.particles.draw(self.screen)
+        if self.drawing_vector:
+            pygame.draw.line(self.screen, (255, 0, 0), self.vector_start, self.vector_end, 3)
         pygame.display.flip()
 
 
@@ -63,6 +68,16 @@ class Particle_system():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
+                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                    self.drawing_vector = True
+                    x, y = pygame.mouse.get_pos()
+                    self.vector_start = pygame.Vector2(x, y)
+                    self.vector_end = pygame.Vector2(x, y)
+                if event.type == pygame.MOUSEMOTION:
+                    x, y = pygame.mouse.get_pos()
+                    self.vector_end = pygame.Vector2(x, y)
+                if event.type == pygame.MOUSEBUTTONUP:
+                    self.drawing_vector = False
 
             self.particles.update(self.direction)
             self.render()
